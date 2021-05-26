@@ -39,6 +39,7 @@ class TourAdmin(admin.ModelAdmin):
 		"id",
 		"name",
 		"region",
+		"photo",
 	)
 	formfield_overrides = {models.ImageField: {'widget': AdminImageWidget}}
 

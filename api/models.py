@@ -50,7 +50,7 @@ class Company(models.Model):
 
 
 class CompanyFeed(models.Model):
-	company = models.OneToOneField(Company, on_delete=models.CASCADE, verbose_name="Компания", related_name="feeds")
+	company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="Компания", related_name="feeds")
 
 	name = models.CharField(max_length=512, verbose_name="Название")
 	photo = models.ImageField(verbose_name="Фото", upload_to="feed_images")
