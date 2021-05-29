@@ -53,11 +53,27 @@ class CompanySerializer(ModelSerializer):
 		]
 
 
+class TourVariantInlineSerializer(ModelSerializer):
+	company = CompanySerializer()
+	date = serializers.DateField(format="%d.%m.%Y", read_only=True)
+	details = TourDetailsSerializer()
+
+	class Meta:
+		model = TourVariant
+		fields = [
+			"company",
+			"coast",
+			"details",
+			"date",
+		]
+
+
 class TourSerializer(ModelSerializer):
 	photos = ImageUrlField(
 		many=True,
 		read_only=True,
 	)
+	variants = TourVariantInlineSerializer(many=True)
 
 	class Meta:
 		model = Tour
@@ -67,6 +83,7 @@ class TourSerializer(ModelSerializer):
 			"name",
 			"region",
 			"photos",
+			"variants",
 		]
 
 
