@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
-from api.models import TourDetails, TourVariant, Company, CompanyContacts, Tour
+from api.models import TourDetails, TourVariant, Company, CompanyContacts, Tour, CompanyFeed
 
 
 class ImageUrlField(serializers.RelatedField):
@@ -51,6 +51,27 @@ class CompanySerializer(ModelSerializer):
 			"name",
 			"contacts"
 		]
+
+
+class CompanyFeedSerializer(ModelSerializer):
+	# photo = ImageUrlField(read_only=True)
+	photo = serializers.SerializerMethodField()
+
+	class Meta:
+		model = CompanyFeed
+		fields = [
+			"id",
+			"company",
+			"photo",
+			"feed"
+		]
+
+	def get_photo(self, feed):
+		request = self.context.get('request', None)
+		photo_url = feed.photo.url
+		if request is not None:
+			return request.build_absolute_uri(photo_url)
+		return photo_url
 
 
 class TourVariantInlineSerializer(ModelSerializer):
