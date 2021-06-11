@@ -149,6 +149,11 @@ DJOSER = {
 		'user': ['djoser.permissions.CurrentUserOrAdmin'],
 		'user_list': ['rest_framework.permissions.IsAdminUser'],
 	},
+	'SERIALIZERS': {
+		'user': 'main.serializers.AppUserSerializer',
+		'user_create': 'main.serializers.CreateAppUserSerializer',
+		'current_user': 'main.serializers.AppUserSerializer',
+	},
 	'SEND_ACTIVATION_EMAIL': True,
 	'SEND_CONFIRMATION_EMAIL': True,
 	'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
@@ -157,6 +162,10 @@ DJOSER = {
 	'HIDE_USERS': True,
 }
 FIXTURES_DIR = os.path.join(os.path.dirname(BASE_DIR), 'main/fixtures')
+
+
+DOMAIN = os.environ.get("DOMAIN", "localhost:8000")
+PROTOCOL = os.environ.get("PROTOCOL", "http")
 
 try:
 	from .settings_local import *

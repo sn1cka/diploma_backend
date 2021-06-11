@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AdminFileWidget
 from django.db import models
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 from api.models import TourPhoto, Tour, TourVariant, Company, CompanyFeed, CompanyContacts, TourVariantDetail
 

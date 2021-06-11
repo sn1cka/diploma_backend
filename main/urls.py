@@ -22,6 +22,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from main import settings
+from main.views import DjoserActivationView
 
 schema_view = get_schema_view(
 	openapi.Info(
@@ -39,6 +40,7 @@ schema_view = get_schema_view(
 urlpatterns = [
 	path('admin/', include('grappelli.urls')),  # grappelli URLS
 	path('admin/', admin.site.urls),
+	path('activate/<str:uid>/<str:token>/', DjoserActivationView.as_view()),
 
 	path('api/', include("api.urls")),
 
