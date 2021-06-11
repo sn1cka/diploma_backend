@@ -2,6 +2,7 @@ from django.db import models
 
 
 # Create your models here.
+from api.choices import tour_difficulties
 
 
 class Tour(models.Model):
@@ -64,23 +65,16 @@ class CompanyFeed(models.Model):
 		verbose_name_plural = "Отзывы о компании"
 
 
-class TourDetails(models.Model):
-	difficulty = models.CharField(max_length=255, verbose_name="Сложность")
-	out_time = models.DateTimeField(verbose_name="Время выхода")
-	back_time = models.DateTimeField(verbose_name="Время возвращения")
-	needed_items = models.CharField(max_length=255, verbose_name="Необходимые вещи")
-
-	class Meta:
-		verbose_name = "Детали тура"
-		verbose_name_plural = "Детали туров"
-
-
 class TourVariant(models.Model):
 	tour = models.ForeignKey(Tour, verbose_name="Тур", related_name="variants", on_delete=models.CASCADE)
 	company = models.ForeignKey(Company, verbose_name="Компания", related_name="variants", on_delete=models.CASCADE)
 	coast = models.PositiveIntegerField(verbose_name="Цена")
-	details = models.OneToOneField(TourDetails, related_name="variant", verbose_name="Детали тура", on_delete=models.CASCADE)
 	date = models.DateField(verbose_name="Дата")
+
+	difficulty = models.CharField(max_length=255, verbose_name="Сложность", choices=tour_difficulties)
+	out_time = models.DateTimeField(verbose_name="Время выхода")
+	back_time = models.DateTimeField(verbose_name="Время возвращения")
+	photographer = models.BooleanField(verbose_name="Наличие фотографа")
 
 	def __str__(self):
 		return f"{self.tour.name} - {self.company.name}"
@@ -88,3 +82,16 @@ class TourVariant(models.Model):
 	class Meta:
 		verbose_name = "Вариант тура"
 		verbose_name_plural = "Варианты туров"
+
+
+class TourVariantDetail(models.Model):
+	title = models.CharField(max_length=255, verbose_name="Заголовок")
+	description = models.CharField(max_length=255, verbose_name="Описание")
+	tour = models.ForeignKey(TourVariant, verbose_name="Тур", on_delete=models.CASCADE, related_name="details")
+
+	def __str__(self):
+		return f"{self.title} - {self.description}"
+
+	class Meta:
+		verbose_name = "Деталь тура"
+		verbose_name_plural = "Детали туров"

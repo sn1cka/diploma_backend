@@ -1,11 +1,10 @@
 from django.contrib import admin
-from django.db import models
-
 # Register your models here.
 from django.contrib.admin.widgets import AdminFileWidget
+from django.db import models
 from django.utils.safestring import mark_safe
 
-from api.models import TourPhoto, Tour, TourVariant, Company, CompanyFeed, CompanyContacts, TourDetails
+from api.models import TourPhoto, Tour, TourVariant, Company, CompanyFeed, CompanyContacts, TourVariantDetail
 
 
 class AdminImageWidget(AdminFileWidget):
@@ -56,10 +55,9 @@ class TourVariantAdmin(admin.ModelAdmin):
 
 class TourDetailsAdmin(admin.ModelAdmin):
 	list_display = (
-		"difficulty",
-		"out_time",
-		"back_time",
-		"needed_items",
+		"title",
+		"description",
+		"tour",
 	)
 
 
@@ -88,7 +86,7 @@ class CompanyFeedAdmin(admin.ModelAdmin):
 
 admin.site.register(Tour, TourAdmin)
 admin.site.register(TourVariant, TourVariantAdmin)
-admin.site.register(TourDetails, TourDetailsAdmin)
+admin.site.register(TourVariantDetail, TourDetailsAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(CompanyFeed, CompanyFeedAdmin)
 admin.site.register(CompanyContacts, CompanyContactsAdmin)

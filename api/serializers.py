@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
-from api.models import TourDetails, TourVariant, Company, CompanyContacts, Tour, CompanyFeed
+from api.models import TourVariantDetail, TourVariant, Company, CompanyContacts, Tour, CompanyFeed
 
 
 class ImageUrlField(serializers.RelatedField):
@@ -14,18 +14,12 @@ class ImageUrlField(serializers.RelatedField):
 		return url
 
 
-class TourDetailsSerializer(ModelSerializer):
-	out_time = serializers.DateTimeField(format="%d.%m.%Y %H:%M", read_only=True)
-	back_time = serializers.DateTimeField(format="%d.%m.%Y %H:%M", read_only=True)
-
+class TourVariantDetailSerializer(ModelSerializer):
 	class Meta:
-		model = TourDetails
+		model = TourVariantDetail
 		fields = [
-			"id",
-			"difficulty",
-			"out_time",
-			"back_time",
-			"needed_items",
+			"title",
+			"description",
 		]
 
 
@@ -77,7 +71,7 @@ class CompanyFeedSerializer(ModelSerializer):
 class TourVariantInlineSerializer(ModelSerializer):
 	company = CompanySerializer()
 	date = serializers.DateField(format="%d.%m.%Y", read_only=True)
-	details = TourDetailsSerializer()
+	details = TourVariantDetailSerializer(many=True)
 
 	class Meta:
 		model = TourVariant
@@ -109,17 +103,24 @@ class TourSerializer(ModelSerializer):
 
 
 class TourVariantSerializer(ModelSerializer):
-	tour = TourSerializer()
+	out_time = serializers.DateTimeField(format="%d.%m.%Y %H:%M", read_only=True)
+	back_time = serializers.DateTimeField(format="%d.%m.%Y %H:%M", read_only=True)
+
 	company = CompanySerializer()
 	date = serializers.DateField(format="%d.%m.%Y", read_only=True)
-	details = TourDetailsSerializer()
+	details = TourVariantDetailSerializer(many=True)
 
 	class Meta:
 		model = TourVariant
 		fields = [
+			"id",
 			"tour",
 			"company",
 			"coast",
 			"details",
 			"date",
+			"out_time",
+			"back_time",
+			"difficulty",
+			"photographer",
 		]
