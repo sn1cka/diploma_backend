@@ -16,3 +16,4 @@ _mac/
 .DS_Store
 **/.DS_Store
 logs/*.log*
+/venv1/
