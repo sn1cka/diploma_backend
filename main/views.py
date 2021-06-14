@@ -1,6 +1,5 @@
 import requests
 from django.shortcuts import render
-from django.urls import reverse
 from django.views.generic import TemplateView
 
 from main.settings import DOMAIN, PROTOCOL

@@ -50,7 +50,6 @@ class TourVariantAdmin(admin.ModelAdmin):
 		"tour",
 		"company",
 		"coast",
-		"date",
 	)
 
 
