@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 from api.choices import tour_difficulties
 
@@ -69,12 +68,13 @@ class TourVariant(models.Model):
 	tour = models.ForeignKey(Tour, verbose_name="Тур", related_name="variants", on_delete=models.CASCADE)
 	company = models.ForeignKey(Company, verbose_name="Компания", related_name="variants", on_delete=models.CASCADE)
 	coast = models.PositiveIntegerField(verbose_name="Цена")
-	date = models.DateField(verbose_name="Дата")
 
 	difficulty = models.CharField(max_length=255, verbose_name="Сложность", choices=tour_difficulties)
 	out_time = models.DateTimeField(verbose_name="Время выхода")
 	back_time = models.DateTimeField(verbose_name="Время возвращения")
 	photographer = models.BooleanField(verbose_name="Наличие фотографа")
+
+	is_active = models.BooleanField(verbose_name="Тур активен", default=False)
 
 	def __str__(self):
 		return f"{self.tour.name} - {self.company.name}"

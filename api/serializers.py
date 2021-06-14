@@ -4,6 +4,12 @@ from rest_framework import serializers
 from api.models import TourVariantDetail, TourVariant, Company, CompanyContacts, Tour, CompanyFeed
 
 
+class FilterActiveTourVariantsSerializer(serializers.ListSerializer):
+	def to_representation(self, data):
+		data = data.filter(is_active=False)
+		return super(FilterActiveTourVariantsSerializer, self).to_representation(data)
+
+
 class ImageUrlField(serializers.RelatedField):
 	def to_representation(self, instance):
 		url = instance.photo.url
@@ -48,7 +54,6 @@ class CompanySerializer(ModelSerializer):
 
 
 class CompanyFeedSerializer(ModelSerializer):
-	# photo = ImageUrlField(read_only=True)
 	photo = serializers.SerializerMethodField()
 
 	class Meta:
@@ -75,6 +80,8 @@ class TourVariantInlineSerializer(ModelSerializer):
 
 	class Meta:
 		model = TourVariant
+		list_serializer_class = FilterActiveTourVariantsSerializer
+
 		fields = [
 			"company",
 			"coast",
@@ -99,6 +106,38 @@ class TourSerializer(ModelSerializer):
 			"region",
 			"photos",
 			"variants",
+		]
+
+
+class TourVariantCreateSerializer(ModelSerializer):
+	out_time = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+	back_time = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+
+	date = serializers.DateField(format="%d.%m.%Y", read_only=True)
+	details = TourVariantDetailSerializer(many=True)
+
+	def create(self, validated_data):
+		details = validated_data.pop('details')
+		tour_variant = TourVariant.objects.create(**validated_data)
+
+		for detail in details:
+			detail = TourVariantDetail.objects.create(tour=tour_variant, title=detail['title'], description=detail["description"])
+			tour_variant.details.add(detail)
+		return tour_variant
+
+	class Meta:
+		model = TourVariant
+		fields = [
+			"id",
+			"tour",
+			"company",
+			"coast",
+			"details",
+			"date",
+			"out_time",
+			"back_time",
+			"difficulty",
+			"photographer",
 		]
 
 
