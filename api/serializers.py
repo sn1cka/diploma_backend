@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ImageField
 from rest_framework import serializers
 
 from api.models import TourVariantDetail, TourVariant, Company, CompanyContacts, Tour, CompanyFeed
@@ -50,6 +50,18 @@ class CompanySerializer(ModelSerializer):
 			"id",
 			"name",
 			"contacts"
+		]
+
+
+class CompanyFeedCreateSerializer(ModelSerializer):
+	photo = ImageField(max_length=None, required=True, use_url=True)
+
+	class Meta:
+		model = CompanyFeed
+		fields = [
+			"company",
+			"photo",
+			"feed"
 		]
 
 

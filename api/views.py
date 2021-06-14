@@ -1,11 +1,15 @@
 # Create your views here.
+from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from api.models import TourVariant, Tour, Company, CompanyFeed
-from api.serializers import TourVariantSerializer, TourSerializer, CompanySerializer, CompanyFeedSerializer, TourVariantCreateSerializer
+from api.serializers import TourVariantSerializer, TourSerializer, CompanySerializer, CompanyFeedSerializer, TourVariantCreateSerializer, \
+	CompanyFeedCreateSerializer
 
 
 class TourVariantsViewSet(ModelViewSet):
@@ -50,3 +54,16 @@ class CompanyViewSet(ModelViewSet):
 		queryset = CompanyFeed.objects.filter(company=company)
 		serializer = CompanyFeedSerializer(queryset, many=True, context={"request": request})
 		return Response(serializer.data)
+
+
+class CompanyFeedViewSet(APIView):
+	queryset = CompanyFeed.objects.all()
+	serializer_class = CompanyFeedCreateSerializer
+	permission_classes = [IsAuthenticatedOrReadOnly]
+
+	def post(self, request, format=None):
+		serializer = CompanyFeedCreateSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

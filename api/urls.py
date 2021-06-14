@@ -3,7 +3,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
 
-from api.views import TourVariantsViewSet, TourViewSet, CompanyViewSet
+from api.views import TourVariantsViewSet, TourViewSet, CompanyViewSet, CompanyFeedViewSet
 
 schema_view = get_schema_view(
 	openapi.Info(
@@ -28,5 +28,6 @@ urlpatterns = [
 	path('', include('djoser.urls')),
 	path('', include('djoser.urls.jwt')),
 	path('', include(router.urls)),
+	path('feeds', CompanyFeedViewSet.as_view()),
 
 ]
