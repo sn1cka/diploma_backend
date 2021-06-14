@@ -61,6 +61,7 @@ class CompanyFeedCreateSerializer(ModelSerializer):
 		fields = [
 			"company",
 			"photo",
+			"name",
 			"feed"
 		]
 
