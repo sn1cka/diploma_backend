@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,48 +29,48 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-	'grappelli',
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'django_filters',
-	'rest_framework',
-	'autofixture',
-	'djoser',
-	'drf_yasg',
-	'main',
-	'api',
+    'grappelli',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django_filters',
+    'rest_framework',
+    'autofixture',
+    'djoser',
+    'drf_yasg',
+    'main',
+    'api',
 ]
 
 MIDDLEWARE = [
-	'django.middleware.security.SecurityMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
-	{
-		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [],
-		'APP_DIRS': True,
-		'OPTIONS': {
-			'context_processors': [
-				'django.template.context_processors.debug',
-				'django.template.context_processors.request',
-				'django.contrib.auth.context_processors.auth',
-				'django.contrib.messages.context_processors.messages',
-			],
-		},
-	},
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 WSGI_APPLICATION = 'main.wsgi.application'
@@ -79,32 +79,32 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-	{
-		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-	},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 REST_FRAMEWORK = {
-	'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # Internationalization
@@ -126,7 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-	# os.path.join(BASE_DIR, "staticfiles"),
+    # os.path.join(BASE_DIR, "staticfiles"),
 ]
 # media
 MEDIA_URL = '/media/'
@@ -144,30 +144,33 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "Vof00001@gmail.com"
 EMAIL_HOST_PASSWORD = "vision63"
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
+}
+
 DJOSER = {
-	'PERMISSIONS': {
-		'user': ['djoser.permissions.CurrentUserOrAdmin'],
-		'user_list': ['rest_framework.permissions.IsAdminUser'],
-	},
-	'SERIALIZERS': {
-		'user': 'main.serializers.AppUserSerializer',
-		'user_create': 'main.serializers.CreateAppUserSerializer',
-		'current_user': 'main.serializers.AppUserSerializer',
-	},
-	'SEND_ACTIVATION_EMAIL': True,
-	'SEND_CONFIRMATION_EMAIL': True,
-	'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-	'ACTIVATION_URL': os.environ.get("ACTIVATION_URL", 'activate/{uid}/{token}'),
-	'PASSWORD_RESET_CONFIRM_URL': os.environ.get("PASSWORD_RESET_CONFIRM_URL", 'reset_password/{uid}/{token}'),
-	'HIDE_USERS': True,
+    'PERMISSIONS': {
+        'user': ['djoser.permissions.CurrentUserOrAdmin'],
+        'user_list': ['rest_framework.permissions.IsAdminUser'],
+    },
+    'SERIALIZERS': {
+        'user': 'main.serializers.AppUserSerializer',
+        'user_create': 'main.serializers.CreateAppUserSerializer',
+        'current_user': 'main.serializers.AppUserSerializer',
+    },
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'ACTIVATION_URL': os.environ.get("ACTIVATION_URL", 'activate/{uid}/{token}'),
+    'PASSWORD_RESET_CONFIRM_URL': os.environ.get("PASSWORD_RESET_CONFIRM_URL", 'reset_password/{uid}/{token}'),
+    'HIDE_USERS': True,
 }
 FIXTURES_DIR = os.path.join(os.path.dirname(BASE_DIR), 'main/fixtures')
-
 
 DOMAIN = os.environ.get("DOMAIN", "localhost:8000")
 PROTOCOL = os.environ.get("PROTOCOL", "http")
 
 try:
-	from .settings_local import *
+    from .settings_local import *
 except ImportError:
-	pass
+    pass
